@@ -1,14 +1,70 @@
-import { Box, Button, Input, Text, Checkbox } from "@chakra-ui/react"
-import { useState } from "react"
-import { Signup } from "./Signup"
+import { Box, Button, Input, Text, Checkbox, useToast } from "@chakra-ui/react"
+import { useState, useContext } from "react"
+import {AuthContext} from "../AuthContectProvider/AuthContextProvider"
 import { Navigate } from "react-router-dom"
+import axios from "axios"
 
 export const Login = () => {
 
   let [show, setShow] = useState(false)
 
+  const toast = useToast()
+
   let [signup, setSignup] = useState(false)
 
+  let {isAuth, isAuthTrue, isAuthFalse} = useContext(AuthContext)
+
+  let [err, seterr] = useState(false)
+
+  let [email, setEmail] = useState("")
+  let [password, setPAssword] = useState("")
+  
+
+
+  let handelSubmit = ()=>{
+
+    axios.get(`https://mock-chak.onrender.com/users`)
+    .then((res)=>{
+        let data = res?.data
+
+        let result = data.filter((ele)=>{
+          if(ele.email==email && ele.password==password){
+            return true
+          }
+          else{
+            return false
+          }
+        })
+
+        if(result.length>0){
+          toast({
+            title: 'SUCCESFULLY LOGGED IN',
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+          })
+          setTimeout(() => {
+            return <Navigate to="/"/>
+          }, 3000);
+        }
+        else{
+          toast({
+            title: 'WRONG CREDENTIALS',
+            status: 'error',
+            duration: 2000,
+            isClosable: true,
+          })
+        }
+    })
+
+    setEmail("")
+    setPAssword("")
+  
+  }
+
+
+  
+  
 
   let handelShow=()=>{
     setShow(!show)
@@ -42,6 +98,9 @@ export const Login = () => {
             borderRadius={"none"}
             border="1px solid black"
             type="email"
+            value={email}
+            name="email"
+            onChange={(e)=>setEmail(e.target.value)}
             />
             <br />
             <br />
@@ -54,10 +113,13 @@ export const Login = () => {
             borderRadius={"none"}
             border="1px solid black"
             type= {show ? "text" : "password"}
+            value={password}
+            name="password"
+            onChange={(e)=>setPAssword(e.target.value)}
             />
             <br />
             <br />
-            <Checkbox onChange={handelShow} mt="6px"/>&emsp; show password
+            <Checkbox border={".5px solid black"} onChange={handelShow} mt="6px"/>&emsp; show password
             <br />
             <br />
             <Button fontSize={"14px"} _hover={{bg:"black", color:"red"}} bg="white" color="black" border="1px solid black" borderRadius={"25px"}>
@@ -65,7 +127,7 @@ export const Login = () => {
             </Button>
             <br />
             <br />
-            <Button  bg="black" color="white" border="1px solid black" borderRadius={"25px"}>
+            <Button  bg="black" color="white" border="1px solid black" borderRadius={"25px"} onClick={handelSubmit} >
               SIGN IN
             </Button>
 

@@ -1,6 +1,6 @@
-import { Box, Flex, Text, Image, Button, useDisclosure } from '@chakra-ui/react'
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { Box, Flex, Text, Image, Button, useDisclosure, Center } from '@chakra-ui/react'
+import React, { useContext } from 'react'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { CartDrawer } from './CartDrawer'
 
 import {
@@ -13,14 +13,24 @@ import {
     MenuOptionGroup,
     MenuDivider,
   } from '@chakra-ui/react'
+import { AuthContext } from '../AuthContectProvider/AuthContextProvider'
 
 
 export const Navbar = () => {
 
     let { isOpen, onOpen, onClose } = useDisclosure();
     
-    
+    let{isAuthFalse} = useContext(AuthContext)
 
+    let navigate = useNavigate
+
+    let handelLogout = ()=>{
+      isAuthFalse()
+      
+    }
+
+
+    
     
   return (
     <div>
@@ -55,8 +65,15 @@ export const Navbar = () => {
                     <MenuButton>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" rokeWidth="2" kelinecap="round" rokeLinejoin="round" className="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     </MenuButton>
-                    <MenuList borderRadius={"25px"} display={"flex"} justifyContent={"center"}>
-                    <Link to="/login" ><Button color={"red"} border={"1px solid red"} _hover={{bg:"red",color:"white"}} borderRadius={"25px"}>Login</Button></Link>
+                    <MenuList gap="5px"  borderTopRightRadius={"25px"} borderBottomLeftRadius={"25px"} display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} >
+                     
+                      <Link to="/login" ><Button color={"red"} bg="white" border={"1px solid red"} _hover={{bg:"red",color:"white"}} borderRadius={"25px"}>Login</Button></Link>
+
+                      <Box><Button >My Account</Button></Box>
+
+                      <Box><Button border={"1px solid red"} bg="white" _hover={{bg:"red",color:"white"}} borderRadius={"25px"} onClick={handelLogout}>LOGOUT</Button></Box>
+                      
+                    
                     </MenuList>
                     </Menu>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" rokeWidth="2" kelinecap="round" rokeLinejoin="round" className="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
@@ -71,7 +88,9 @@ export const Navbar = () => {
                     <Link to="/About"><Text>ABOUT</Text></Link>
                     <Link to="#"><Text>STORIES</Text></Link>  
                     
+                    
                 </Flex>
+                <hr />
 
                 
 
