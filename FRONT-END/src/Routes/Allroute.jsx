@@ -8,6 +8,10 @@ import { Shop } from "../Pages/Shop"
 import { Login } from "../FourIcon/Login"
 import { Signup } from "../FourIcon/Signup"
 
+import { SinglePage } from "../SmallComponents/SinglePage"
+import { Account } from "../SmallComponents/Account"
+
+
 export const Allroute = () => {
   return (
     <div>
@@ -23,6 +27,9 @@ export const Allroute = () => {
         <Route path="/shop" element={<Shop/>}></Route>
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/signup" element={<Signup/>}></Route>
+
+        <Route path="/coffee/:id" element={<SinglePage/>}></Route>
+        <Route path="/account" element={<Account/>}></Route>
 
     </Routes>
         

@@ -29,10 +29,12 @@ export const Footer = () => {
         
         
         <Box bg="#f9f8f9" display={"flex"} justifyContent={"space-evenly"}  >
-            <Box>
-            <Image src="https://cdn.discordapp.com/attachments/1066037876090998894/1103219794364354580/bialetti-vector-logo_clear.png"  width={"20%"}/>
+
+            <Box ml="50px" w="50%">
+            <Image w="100%" src="https://cdn.discordapp.com/attachments/1066037876090998894/1103219794364354580/bialetti-vector-logo_clear.png"  width={"20%"}/>
             </Box>
-            <Box display={"flex"} justifyContent={"space-between"} width="30%" alignItems={"center"}>
+            <Box mr="230px" display={"flex"} justifyContent={"space-between"} width="30%" alignItems={"center"}>
+
                 <Box>
                     <Text>FREE DELIVERY</Text>
                     <p>for orders over 59,90€</p>
