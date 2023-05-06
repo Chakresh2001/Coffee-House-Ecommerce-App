@@ -149,5 +149,6 @@ export const Shop = () => {
 
 
     </div>
+
   )
 }
