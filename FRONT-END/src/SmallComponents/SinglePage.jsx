@@ -1,17 +1,35 @@
-import { Box, Button, Image, Text, Divider  } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import { Box, Button, Image, Text, Divider, Spinner,  useToast, useDisclosure  } from '@chakra-ui/react'
+import React, {  useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {Footer} from "../Pages/Footer"
 import axios from 'axios'
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+  } from '@chakra-ui/react'
+
 
 export const SinglePage = () => {
 
+    const toast = useToast()
+
     let {id} = useParams()
 
-    let [count, setCount] = useState(0)
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    
+    let [cart, setCart] = useState([])
 
-    let [data, setData] = useState([])
+    let [count, setCount] = useState(1)
+
+    let [data, setData] = useState({})
     let [load, setLoad] = useState(false)
+
+  
 
 
     useEffect(()=>{
@@ -30,6 +48,35 @@ export const SinglePage = () => {
         setCount(count+val)
     }
 
+    const addItemToCart = () => {
+        const existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || []
+        const itemExists = existingCartItems.some((item) => item.id === data.id)
+    
+        if (!itemExists) {
+          const cartItem = { ...data, quantity: count }
+          const newCartItems = [...existingCartItems, cartItem]
+          localStorage.setItem('cartItems', JSON.stringify(newCartItems))
+          setCart(newCartItems)
+          
+          toast({
+            title: 'Item Added To Cart',
+            status: 'success',
+            duration: 2000,
+            position:"top-right",
+            isClosable: true,
+          })
+        }
+        else{
+            toast({
+                title: 'Item Already In Cart',
+                status: 'error',
+                duration: 2000,
+                position:"top-right",
+                isClosable: true,
+              })
+        }
+      }
+     
 
   return (
     <div style={{paddingTop:"120px", backgroundColor:"#F1ECED"}}>
@@ -54,9 +101,9 @@ export const SinglePage = () => {
                     <Box mt="10px" display={"flex"} gap="30px">
                         <Button borderRadius={"50%"} background={"white"} border="1px solid black" _hover={{bg:"none"}} onClick={()=>handelCount(+1)}>+</Button>
                         <Text fontSize={"25px"}>{count}</Text>
-                        <Button borderRadius={"50%"} background={"white"} border="1px solid black" _hover={{bg:"none"}} isDisabled={count==0} onClick={()=>handelCount(-1)}>-</Button>
+                        <Button borderRadius={"50%"} background={"white"} border="1px solid black" _hover={{bg:"none"}} isDisabled={count==1} onClick={()=>handelCount(-1)}>-</Button>
                     </Box>
-                    <Button mt="10px" ml="10px" borderRadius={"25px"} bg="#230E09" color="white">ADD TO CART</Button>
+                    <Button mt="10px" ml="10px" borderRadius={"25px"} bg="#230E09" color="white" onClick={onOpen}>ADD TO CART</Button>
                 </Box>
 
             </Box>
@@ -87,10 +134,50 @@ export const SinglePage = () => {
             You can return any purchased product within 14 days from the delivery date. If you want to arrange free collection of used electrical products, please click here.            </Text>
         </Box>
 
+       </Box>
         <Box mt="200px">
             <Footer/>
         </Box>
-       </Box>
+
+        <Modal isOpen={isOpen} onClose={onClose} >
+        <ModalOverlay />
+        <ModalContent maxW="40rem">
+          <ModalHeader>Details</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody >
+            <Box padding="30px" display={"flex"} gap="20px">
+                <Box w="50%" >
+                    <Image src={data.image}/>
+                </Box>
+                <Box textAlign={"center"}  w="50%" >
+                    
+                    <Text fontWeight={"bold"} fontSize={"30px"}>{data.name}</Text>
+                    <br />
+                    <Text fontWeight={"bold"} fontSize={"30px"}>$ {data.price}</Text>
+                    <br />
+                    <Text>QUANTITY : {count}</Text>
+
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+
+                    <Button colorScheme='red' borderRadius={"25px"} mr={3} onClick={onClose}>
+              Continue Shopping
+            </Button>
+            <br />
+            <br />
+            <Button _hover={{bg:"#230E09", color:"white"}}  borderRadius={"25px"} bg="#230E09" color="white" onClick={addItemToCart}>ADD TO CART</Button>
+                </Box>
+            </Box>
+          </ModalBody>
+
+          <ModalFooter>
+            
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
     </div>
   )

@@ -5,7 +5,7 @@ export let AuthContext = createContext()
 export const AuthContextProvider = ({children}) => {
 
     let [isAuth, setisAuth] = useState(false)
-
+    
     let isAuthTrue = ()=>setisAuth(true)
 
     let isAuthFalse = ()=>setisAuth(false)
@@ -13,7 +13,8 @@ export const AuthContextProvider = ({children}) => {
     let val = {
         isAuth,
         isAuthTrue,
-        isAuthFalse
+        isAuthFalse,
+        
     }
 
   return (
