@@ -41,6 +41,7 @@ export const Login = () => {
             title: 'SUCCESFULLY LOGGED IN',
             status: 'success',
             duration: 2000,
+            position:"top-right",
             isClosable: true,
           })
           setTimeout(() => {
@@ -52,6 +53,7 @@ export const Login = () => {
             title: 'WRONG CREDENTIALS',
             status: 'error',
             duration: 2000,
+            position:"top-right",
             isClosable: true,
           })
         }

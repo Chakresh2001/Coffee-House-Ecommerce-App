@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { CoffeCard } from '../SmallComponents/CoffeCard'
 import axios from 'axios'
 import { Pagination } from '../SmallComponents/Pagination'
+import { Footer } from './Footer'
 
 export const Shop = () => {
 
@@ -134,13 +135,17 @@ export const Shop = () => {
             </Box>
             </Box>
 
-            <Box mt="50px">
+            <Box mt="80px">
                 {/* pagination */}
                 <Pagination
                 page={page}
                 handelPage={handelPage}
                 />
             </Box>
+
+                <Box my="80px">
+                  <Footer/>
+                </Box>
             
 
 

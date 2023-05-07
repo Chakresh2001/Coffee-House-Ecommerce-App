@@ -10,43 +10,29 @@ import {
   Button,
   Center
 } from '@chakra-ui/react';
+import { CartItemDrawer } from '../SmallComponents/CartItemDrawer';
 
-export const CartDrawer = ({ isOpen, onClose, onModalOpen }) => {
+export const CartDrawer = ({ isOpen, onClose }) => {
   return (
     <div>
        <Drawer isOpen={isOpen} placement="right" onClose={onClose} data-cy="chakra-drawer">
 
     
 
-<DrawerContent>
-  <DrawerCloseButton></DrawerCloseButton>
-  <DrawerHeader>Chakra UI Assignment</DrawerHeader>
+<DrawerContent maxW={"25rem"}>
+  <DrawerCloseButton color={"white"}></DrawerCloseButton>
+  <DrawerHeader bg="#220E08" color="white" textAlign={"center"}>MY CART</DrawerHeader>
 
 
     <DrawerBody>
 
      
     
-    <Box mt="20px" width="100%"  display="flex" justifyContent="center">
-        <Button data-cy = "home">Home</Button>
-      </Box>
-      
+    <CartItemDrawer
 
-      <Box mt="20px" width="100%" display="flex" justifyContent="center">
-        <Button data-cy = "gallery">Gallery</Button>
-      </Box>
+    onClose = {onClose}
 
-      <Box mt="20px" width="100% " display="flex" justifyContent="center" onClick={onModalOpen}>
-        <Button  data-cy = "login">Login</Button>
-      </Box>
-
-      <Box mt="20px" width="100%" display="flex" justifyContent="center">
-        <Button data-cy = "signup">SignUp</Button>
-      </Box>
-
-      <Box mt="20px" width="100%" display="flex" justifyContent="center">
-        <Button data-cy = "about">About Us</Button>
-      </Box>
+    />
 
 
     
