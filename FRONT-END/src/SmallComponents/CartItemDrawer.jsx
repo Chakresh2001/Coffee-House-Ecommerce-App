@@ -1,6 +1,6 @@
 import { Box, Button, Image, Text } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 
 export const CartItemDrawer = ({onClose}) => {
 
@@ -34,8 +34,7 @@ export const CartItemDrawer = ({onClose}) => {
   }
   if(cartPage){
     onClose()
-    return <Navigate to="/cart"/>
-
+   
   }
   
 
@@ -47,18 +46,18 @@ export const CartItemDrawer = ({onClose}) => {
             <Box padding="10px">
               <Box display={"flex"} gap="40px" justifyContent={"space-around"}>
              
-             <Box w={ele.id==1 || ele.id==3 ? "40%" : "50%"}>
+             <Box >
              <Image w="80%" src={ele.image}></Image>
              </Box>
              
              <Box>
-               <Text fontSize={"17px"} fontWeight={"bold"}>{ele.name}</Text>
+               <Text fontSize={"17px"} fontWeight={"bold"} noOfLines={1} >{ele.name}</Text>
                <br />
                <Text>$ {ele.price}</Text>
                
            </Box>
 
-           <Button onClick={() => handelDelete(ele.id)}>Delete</Button>
+           <Button color="brown" onClick={() => handelDelete(ele.id)}>Delete</Button>
             
            </Box>
            <hr />
@@ -79,12 +78,12 @@ export const CartItemDrawer = ({onClose}) => {
           </Text>
         </Box>
 
-        <Box  mt="20px"display={"flex"} flexDirection={"column"} justifyContent={"center"}>
+        <Box  mt="20px">
         
         
-        <Button borderRadius={"25px"} bg="white" border="1px solid black" color="black" _hover={{bg:"black", color:"white"}} onClick={handelPage}>VIEW CART</Button>
+        <Link to={"/cart"}><Button ml="110px" borderRadius={"25px"} bg="white" border="1px solid black" color="black" _hover={{bg:"black", color:"white"}} onClick={handelPage}>VIEW CART</Button></Link>
         
-        <Button  borderRadius={"25px"} mt="10px" bg="red" color="white" _hover={{bg:"red", color:"white"}}>PROCEED TO CHECKOUT</Button>
+        <Link to={"/checkout"}><Button ml="60px" borderRadius={"25px"} mt="10px" bg="red" color="white" _hover={{bg:"red", color:"white"}}>PROCEED TO CHECKOUT</Button></Link>
         </Box>
       </Box>
     </div>

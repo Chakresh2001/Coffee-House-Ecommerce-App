@@ -28,7 +28,7 @@ export const Pagination = ({page,handelPage}) => {
         <Box display={"flex"} justifyContent={"center"} gap="20px">
             {
                 arr.map((ele)=>(
-                    <Button borderRadius={"50%"} backgroundColor={ele==page ? "orange.400" : "white"} onClick={()=>handelPage(ele)} border="1px solid black">{ele}</Button>
+                    <Button borderRadius={"50%"} backgroundColor={ele==page ? "blue.400" : "white"} onClick={()=>handelPage(ele)} border="1px solid black">{ele}</Button>
                 ))
             }
         </Box>
