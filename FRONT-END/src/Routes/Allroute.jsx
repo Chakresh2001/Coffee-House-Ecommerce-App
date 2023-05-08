@@ -10,7 +10,8 @@ import { Signup } from "../FourIcon/Signup"
 import { SinglePage } from "../SmallComponents/SinglePage"
 import { Account } from "../SmallComponents/Account"
 import { Cart } from "../FourIcon/Cart"
-import {CheckOut} from "../Pages/CheckOut"
+import { Checkout } from "../Pages/Checkout"
+import { Wishlist } from "../FourIcon/Wishlist"
 
 export const Allroute = () => {
   return (
@@ -30,7 +31,8 @@ export const Allroute = () => {
         <Route path="/coffee/:id" element={<SinglePage/>}></Route>
         <Route path="/account" element={<Account/>}></Route>
         <Route path="/cart" element={<Cart/>}></Route>
-        <Route path="/checkout" element={<CheckOut/>}></Route>
+        <Route path="/checkout" element={<Checkout/>}></Route>
+        <Route path="/wishlist" element={<Wishlist/>}></Route>
     </Routes>
         
     </div>

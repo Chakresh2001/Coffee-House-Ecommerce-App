@@ -11,7 +11,8 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-  } from '@chakra-ui/react'
+  } from '@chakra-ui/react' 
+  
 
 
 export const SinglePage = () => {
@@ -76,15 +77,44 @@ export const SinglePage = () => {
               })
         }
       }
-     
+      const addItemTowishlist = () => {
+        const existingCartItems = JSON.parse(localStorage.getItem('wishlistItem')) || []
+        const itemExists = existingCartItems.some((item) => item.id === data.id)
+    
+        if (!itemExists) {
+          const cartItem = { ...data, quantity: count }
+          const newCartItems = [...existingCartItems, cartItem]
+          localStorage.setItem('wishlistItem', JSON.stringify(newCartItems))
+          setCart(newCartItems)
+          
+          toast({
+            title: 'Item Added To Wish List',
+            status: 'success',
+            duration: 2000,
+            position:"top-right",
+            isClosable: true,
+          })
+        }
+        else{
+            toast({
+                title: 'Item Already In Wish List',
+                status: 'error',
+                duration: 2000,
+                position:"top-right",
+                isClosable: true,
+              })
+        }
+      }
+      
 
   return (
     <div style={{paddingTop:"120px", backgroundColor:"#F1ECED"}}>
 
         <Box  display={"flex"} w="80%" ml="200px" gap="50px">
             
-            <Box w="50%">
+            <Box w="50%" position={"relative"}>
                 <Image src={data.image}/>
+                 
             </Box>
 
             <Box w="40%">
@@ -103,7 +133,11 @@ export const SinglePage = () => {
                         <Text fontSize={"25px"}>{count}</Text>
                         <Button borderRadius={"50%"} background={"white"} border="1px solid black" _hover={{bg:"none"}} isDisabled={count==1} onClick={()=>handelCount(-1)}>-</Button>
                     </Box>
-                    <Button mt="10px" ml="10px" borderRadius={"25px"} bg="#230E09" color="white" onClick={onOpen}>ADD TO CART</Button>
+                    <Box display={"flex"} gap="5px" w="350px">
+                    <Button mt="10px" padding="10px" ml="10px" borderRadius={"5px"} bg="#230E09" color="white" _hover={{bg:"black",color:"white"}} onClick={onOpen}>ADD TO CART</Button>
+                    <Button mt="10px" padinng="10px" ml="10px" borderRadius={"5px"} bg="#230E09" color="white" _hover={{bg:"black",color:"white"}} onClick={addItemTowishlist}>ADD TO WISHLIST</Button>
+                    </Box>
+                    
                 </Box>
 
             </Box>

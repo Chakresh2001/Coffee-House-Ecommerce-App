@@ -1,7 +1,7 @@
 import { Box, Button, Input, Text, Checkbox, useToast } from "@chakra-ui/react"
 import { useState, useContext } from "react"
 import {AuthContext} from "../AuthContectProvider/AuthContextProvider"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import axios from "axios"
 
 export const Login = () => {
@@ -12,16 +12,18 @@ export const Login = () => {
 
   let [signup, setSignup] = useState(false)
 
-  let {isAuth, isAuthTrue, isAuthFalse} = useContext(AuthContext)
+  let {isAuth, isAuthTrue, isAuthFalse, setNewNAme} = useContext(AuthContext)
 
-  let [err, seterr] = useState(false)
+  
 
   let [email, setEmail] = useState("")
   let [password, setPAssword] = useState("")
   
+  let navigate = useNavigate()
 
 
   let handelSubmit = ()=>{
+    
 
     axios.get(`https://mock-chak.onrender.com/users`)
     .then((res)=>{
@@ -37,6 +39,7 @@ export const Login = () => {
         })
 
         if(result.length>0){
+          setNewNAme(`${result[0].firstName} ${result[0].lastName}`)
           toast({
             title: 'SUCCESFULLY LOGGED IN',
             status: 'success',
@@ -44,8 +47,9 @@ export const Login = () => {
             position:"top-right",
             isClosable: true,
           })
+          isAuthTrue()
           setTimeout(() => {
-            return <Navigate to="/"/>
+            navigate("/")
           }, 3000);
         }
         else{
@@ -56,6 +60,7 @@ export const Login = () => {
             position:"top-right",
             isClosable: true,
           })
+          isAuthFalse()
         }
     })
 

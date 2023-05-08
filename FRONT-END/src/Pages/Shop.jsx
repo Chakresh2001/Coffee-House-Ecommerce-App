@@ -17,6 +17,7 @@ export const Shop = () => {
 
   let [page, setPage] = useState(1)
 
+  
 
 
   let getApi = (url, category, order)=>{
@@ -105,7 +106,7 @@ export const Shop = () => {
           </Box>
             
             <Box  bg="#E0D5C5" mt="50px" padding={"20px"}>
-            <Box mt="30px" w="95%" display={"grid"} gridTemplateColumns={"1fr 1fr 1fr"}  ml="80px" gap="10px" >
+            <Box mt="30px" w="95%" display={"grid"} gridRowGap={"50px"} gridTemplateColumns={"1fr 1fr 1fr"}  ml="80px" >
 
 
                 {
