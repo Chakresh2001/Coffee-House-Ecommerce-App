@@ -1,4 +1,8 @@
+
 import { Box, Flex, Text, Image, Button, useDisclosure, Center, useToast, Input  } from '@chakra-ui/react'
+
+
+
 import React, { useContext } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { CartDrawer } from './CartDrawer'
@@ -16,6 +20,7 @@ export const Navbar = () => {
 
     let { isOpen, onOpen, onClose } = useDisclosure();
     
+
     let{isAuth, isAuthFalse} = useContext(AuthContext)
 
     const toast = useToast()
@@ -29,8 +34,6 @@ export const Navbar = () => {
         isClosable: true,
       })
     }
-
-  
 
 
     
@@ -72,14 +75,19 @@ export const Navbar = () => {
                      
                     <Link to="/login" ><Button display={isAuth ? "none" : "block"} color={"red"} bg="white" border={"1px solid red"} _hover={{bg:"red",color:"white"}} borderRadius={"25px"}>Login</Button></Link>
 
+
                       <Link to="/account" ><Box><Button borderRadius={"25px"} bg="white" border="1px solid red" _hover={{bg:"red",color:"white"}} color="red">My Account</Button></Box></Link>
 
+
                       <Box><Button display={!isAuth ? "none" : "block"}  border={"1px solid red"} bg="white" _hover={{bg:"red",color:"white"}} borderRadius={"25px"} color="red" onClick={handelLogout}>LOGOUT</Button></Box>
+
                       
                     
                     </MenuList>
                     </Menu>
+
                     <svg onClick={onOpen} xmlns="http://www.w3.org/2000/svg" style={{marginTop:"6px"}} width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" rokeWidth="2" kelinecap="round" rokeLinejoin="round" className="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+
                     </Box>
                 </Box>
                 <Flex mt="20px" justifyContent={"space-evenly"} pb={"15px"}>
