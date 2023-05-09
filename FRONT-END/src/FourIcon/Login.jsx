@@ -70,7 +70,9 @@ export const Login = () => {
   }
 
 
-  
+  if(isAuth==false){
+    localStorage.clear()
+  }
   
 
   let handelShow=()=>{
