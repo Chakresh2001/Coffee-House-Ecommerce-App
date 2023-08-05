@@ -42,7 +42,7 @@ export const Account = () => {
 
   let [addAddress, setAddAddress] = useState(false)
   
-  let [userData, setUserData] = useState([])
+  let [userData, setUserData] = useState(JSON.parse(localStorage.getItem("Address"))||[])
 
   let [formData, dispatch] = useReducer(reducer, ini)
 
@@ -89,6 +89,7 @@ let handelSubmit = (e)=>{
           
           
         }
+       
         
   
 

@@ -1,5 +1,5 @@
 import { Box, Image, Text, Flex, Button, useToast, Input } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Table,
   Thead,
@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { Footer } from '../Pages/Footer'
+import { AuthContext } from '../AuthContectProvider/AuthContextProvider'
 
 function Discount ({handelChange,handelClickDis}){
   console.log(handelChange,handelClickDis)
@@ -44,6 +45,8 @@ export const Cart = () => {
   let [discount, setDiscount] = useState(false)
 
   let [dis, setDis] = useState("")
+
+  let address = localStorage.getItem("Address")
 
 
 
@@ -175,15 +178,23 @@ export const Cart = () => {
 
                     </Box>
                   </Box>
-
-                  
-                </Box>
-              <Box  display="flex" justifyContent={"center"} >
+                      {
+                        address ? (
+                          <Box  display="flex" justifyContent={"center"} >
               <Link to={"/checkout"}><Button mb="10px" mt="15px" bg="#F20100" color="white" borderRadius={"25px"} _hover={{bg:"#F20100", color:"white"}}>
               CHECKOUT
               </Button></Link>
               
               </Box>
+                        ) : (
+                          <Box  display="flex" justifyContent={"center"} mt="5px" mb="5px" fontWeight={"bold"} >
+                            Kindly Add Your Address to proceed
+                          </Box>
+                        )
+                      }
+                  
+                </Box>
+
               </Box>
 
 

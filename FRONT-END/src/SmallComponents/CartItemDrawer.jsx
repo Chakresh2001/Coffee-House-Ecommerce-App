@@ -1,14 +1,19 @@
 import { Box, Button, Image, Text } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
+import { AuthContext } from '../AuthContectProvider/AuthContextProvider'
 
 export const CartItemDrawer = ({onClose}) => {
+
+  let {isAuth, name} = useContext(AuthContext)
 
   let [cartItem, setCartItem] = useState([])
 
   let [total, setTotal] = useState(0)
 
   let [cartPage, setCartPage] = useState(false)
+
+  let address = localStorage.getItem("Address")
 
   useEffect(()=>{
     let avilable = JSON.parse(localStorage.getItem("cartItems")) || []
@@ -81,9 +86,15 @@ export const CartItemDrawer = ({onClose}) => {
         <Box  mt="20px">
         
         
-        <Link to={"/cart"}><Button ml="110px" borderRadius={"25px"} bg="white" border="1px solid black" color="black" _hover={{bg:"black", color:"white"}} onClick={handelPage}>VIEW CART</Button></Link>
+        {address ? (<><Link to={"/cart"}><Button ml="110px" borderRadius={"25px"} bg="white" border="1px solid black" color="black" _hover={{bg:"black", color:"white"}} onClick={handelPage}>VIEW CART</Button></Link>
         
-        <Link to={"/checkout"}><Button ml="60px" borderRadius={"25px"} mt="10px" bg="red" color="white" _hover={{bg:"red", color:"white"}}>PROCEED TO CHECKOUT</Button></Link>
+        <Link to={"/checkout"}><Button ml="60px" borderRadius={"25px"} mt="10px" bg="red" color="white" _hover={{bg:"red", color:"white"}}>PROCEED TO CHECKOUT</Button></Link></>):( 
+          
+          <Box  mt="5px" mb="5px" fontWeight={"bold"} >
+            Kindly Add Your Address to proceed
+          </Box>
+          
+         )}
         </Box>
       </Box>
     </div>

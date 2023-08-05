@@ -11,7 +11,7 @@ import { Signup } from "../FourIcon/Signup"
 import { SinglePage } from "../SmallComponents/SinglePage"
 import { Account } from "../SmallComponents/Account"
 import { Cart } from "../FourIcon/Cart"
-import { Checkout } from "../Pages/Checkout"
+import { Checkout } from "../Pages/CheckOut"
 import { Wishlist } from "../FourIcon/Wishlist"
 
 
