@@ -28,7 +28,7 @@ export const CartItemDrawer = ({onClose}) => {
         }
       })
       .then((res)=>res.json())
-      .then((res)=>add = setCartItem(res.message))
+      .then((res)=>setCartItem(res.message))
       .catch((err)=>console.log(err))
     }
   }
