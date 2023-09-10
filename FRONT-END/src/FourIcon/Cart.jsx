@@ -46,13 +46,39 @@ export const Cart = () => {
 
   let [dis, setDis] = useState("")
 
-  let address = localStorage.getItem("Address")
+  let [address, setAddress] = useState([])
 
+  const getData = ()=>{
+    const token = JSON.parse(localStorage.getItem("token"))
+    fetch("https://worrisome-bass-hosiery.cyclic.cloud/cart", {
+        method : "GET",
+        headers : {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        }
+      })
+      .then((res)=>res.json())
+      .then((res)=>setCartItem(res.message))
+      .catch((err)=>console.log(err))
+  }
 
 
   useEffect(()=>{
-    let avilable = JSON.parse(localStorage.getItem("cartItems")) || []
-    setCartItem(avilable)
+    getData()
+    const token = JSON.parse(localStorage.getItem("token"))
+    fetch("https://worrisome-bass-hosiery.cyclic.cloud/address",{
+    method:"GET",
+    headers :{
+      "Authorization": token,
+      "Content-Type": "application/json"
+    },
+  })
+  .then((res)=>res.json())
+  .then((res)=>{
+    console.log(res)
+    setAddress(res.message)
+  })
+  .catch((err)=>console.log(err))
   },[])
 
   useEffect(()=>{
@@ -69,9 +95,26 @@ export const Cart = () => {
   } 
 
   let handelDelete = (id) => {
-    const updatedItems = cartItem.filter((item) => item.id !== id)
-    localStorage.setItem('cartItems', JSON.stringify(updatedItems))
-    setCartItem(updatedItems)
+    const token = JSON.parse(localStorage.getItem("token"))
+    fetch(`https://worrisome-bass-hosiery.cyclic.cloud/cart/${id}`, {
+        method : "DELETE",
+        headers : {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        }
+      })
+      .then((res)=>res.json())
+      .then((res)=>{
+        toast({
+          title: 'Item Removed From Cart',
+          status: 'error',
+          duration: 2000,
+          position:"top-right",
+          isClosable: true,
+        })
+        getData()
+      })
+      .catch((err)=>console.log(err))
   }
 
   let handelClickDis = ()=>{
@@ -131,7 +174,7 @@ export const Cart = () => {
           <Td  textAlign={"center"} w='25%'>${ele.price.toFixed(2)}</Td>
           <Td  textAlign={"center"} w='25%'>{ele.quantity}</Td>
           <Td  textAlign={"center"} w='25%' >${(ele.price * ele.quantity).toFixed(2)}</Td>
-          <Td color="brown" onClick={() => handelDelete(ele.id)} _hover={{cursor:"pointer"}}>Delete</Td>
+          <Td color="brown" onClick={() => handelDelete(ele._id)} _hover={{cursor:"pointer"}}>Delete</Td>
         </Tr>
       ))}
     </Tbody>
@@ -168,7 +211,7 @@ export const Cart = () => {
 
                   <Box mt="40px">
                     <Box>
-                    <Text textAlign={"center"} onClick={handelDiscount} _hover={{cursor:"pointer"}}>APPLY DISCOUNT</Text>
+                    <Text textAlign={"center"} onClick={handelDiscount} _hover={{cursor:"pointer"}} color={"purple.400"} fontWeight={"bold"}>APPLY DISCOUNT</Text>
                     </Box>
                     <Box>
                     {discount && <Discount
@@ -179,7 +222,7 @@ export const Cart = () => {
                     </Box>
                   </Box>
                       {
-                        address ? (
+                        address.length>0 ? (
                           <Box  display="flex" justifyContent={"center"} >
               <Link to={"/checkout"}><Button mb="10px" mt="15px" bg="#F20100" color="white" borderRadius={"25px"} _hover={{bg:"#F20100", color:"white"}}>
               CHECKOUT

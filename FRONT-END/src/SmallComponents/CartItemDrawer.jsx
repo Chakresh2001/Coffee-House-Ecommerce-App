@@ -1,4 +1,4 @@
-import { Box, Button, Image, Text } from '@chakra-ui/react'
+import { Box, Button, Image, Text, useToast } from '@chakra-ui/react'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { AuthContext } from '../AuthContectProvider/AuthContextProvider'
@@ -8,16 +8,43 @@ export const CartItemDrawer = ({onClose}) => {
   let {isAuth, name} = useContext(AuthContext)
 
   let [cartItem, setCartItem] = useState([])
-
+  const toast = useToast()
   let [total, setTotal] = useState(0)
 
   let [cartPage, setCartPage] = useState(false)
 
-  let address = localStorage.getItem("Address")
+  let [address, setAddress] = useState([])
+
+  const getData = ()=>{
+    const token = JSON.parse(localStorage.getItem("token"))
+    fetch("https://worrisome-bass-hosiery.cyclic.cloud/cart", {
+        method : "GET",
+        headers : {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        }
+      })
+      .then((res)=>res.json())
+      .then((res)=>setCartItem(res.message))
+      .catch((err)=>console.log(err))
+  }
 
   useEffect(()=>{
-    let avilable = JSON.parse(localStorage.getItem("cartItems")) || []
-    setCartItem(avilable)
+    getData()
+    const token = JSON.parse(localStorage.getItem("token"))
+    fetch("https://worrisome-bass-hosiery.cyclic.cloud/address",{
+    method:"GET",
+    headers :{
+      "Authorization": token,
+      "Content-Type": "application/json"
+    },
+  })
+  .then((res)=>res.json())
+  .then((res)=>{
+    console.log(res)
+    setAddress(res.message)
+  })
+  .catch((err)=>console.log(err))
   },[])
 
   useEffect(() => {
@@ -29,9 +56,26 @@ export const CartItemDrawer = ({onClose}) => {
   }, [cartItem])
 
   let handelDelete = (id) => {
-    const updatedItems = cartItem.filter((item) => item.id !== id)
-    localStorage.setItem('cartItems', JSON.stringify(updatedItems))
-    setCartItem(updatedItems)
+    const token = JSON.parse(localStorage.getItem("token"))
+    fetch(`https://worrisome-bass-hosiery.cyclic.cloud/cart/${id}`, {
+        method : "DELETE",
+        headers : {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        }
+      })
+      .then((res)=>res.json())
+      .then((res)=>{
+        toast({
+          title: 'Item Removed From Cart',
+          status: 'error',
+          duration: 2000,
+          position:"top-right",
+          isClosable: true,
+        })
+        getData()
+      })
+      .catch((err)=>console.log(err))
   }
 
   let handelPage = ()=>{
@@ -62,7 +106,7 @@ export const CartItemDrawer = ({onClose}) => {
                
            </Box>
 
-           <Button color="brown" onClick={() => handelDelete(ele.id)}>Delete</Button>
+           <Button color="brown" onClick={() => handelDelete(ele._id)}>Delete</Button>
             
            </Box>
            <hr />
@@ -86,7 +130,7 @@ export const CartItemDrawer = ({onClose}) => {
         <Box  mt="20px">
         
         
-        {address ? (<><Link to={"/cart"}><Button ml="110px" borderRadius={"25px"} bg="white" border="1px solid black" color="black" _hover={{bg:"black", color:"white"}} onClick={handelPage}>VIEW CART</Button></Link>
+        {address.length>0 ? (<><Link to={"/cart"}><Button ml="110px" borderRadius={"25px"} bg="white" border="1px solid black" color="black" _hover={{bg:"black", color:"white"}} onClick={handelPage}>VIEW CART</Button></Link>
         
         <Link to={"/checkout"}><Button ml="60px" borderRadius={"25px"} mt="10px" bg="red" color="white" _hover={{bg:"red", color:"white"}}>PROCEED TO CHECKOUT</Button></Link></>):( 
           

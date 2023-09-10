@@ -8,10 +8,10 @@ export const Pagination = ({page,handelPage}) => {
     let [total, setTotal] = useState(0)
 
     useEffect(()=>{
-        axios.get(`https://mock-chak.onrender.com/coffee`)
+        axios.get(`https://worrisome-bass-hosiery.cyclic.cloud/coffee`)
         .then((res)=>{
-            let data = res.data
-            let val = Math.ceil(data.length/6)
+            let data = res.data.totalCount
+            let val = Math.ceil(data/6)
             setTotal(val)
         })
     },[])

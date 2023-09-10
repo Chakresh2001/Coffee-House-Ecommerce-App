@@ -28,8 +28,20 @@ export const Checkout = () => {
 
   
   useEffect(()=>{
-    let avilable = JSON.parse(localStorage.getItem("Address")) || []
-    setAddressDetails(avilable[0])
+    const token = JSON.parse(localStorage.getItem("token"))
+    fetch("https://worrisome-bass-hosiery.cyclic.cloud/address",{
+    method:"GET",
+    headers :{
+      "Authorization": token,
+      "Content-Type": "application/json"
+    },
+  })
+  .then((res)=>res.json())
+  .then((res)=>{
+    console.log(res)
+    setAddressDetails(res.message[0])
+  })
+  .catch((err)=>console.log(err))
     
   },[])
 
@@ -37,8 +49,7 @@ export const Checkout = () => {
     setDetails(addressdetails)
   },[details])
 
-  console.log(addressdetails)
-  console.log(details)
+  
 
   if(isOpen){
     setTimeout(() => {

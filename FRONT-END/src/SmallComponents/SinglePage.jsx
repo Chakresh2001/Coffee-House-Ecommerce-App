@@ -35,10 +35,11 @@ export const SinglePage = () => {
 
     useEffect(()=>{
         setLoad(true)
-        axios.get(`https://mock-chak.onrender.com/coffee/${id}`)
+        axios.get(`https://worrisome-bass-hosiery.cyclic.cloud/coffee/${id}`)
         .then((res)=>{
             setLoad(false)
-            setData(res.data)
+            setData(res.data.coffee[0])
+            // console.log(res.data)
         })
 
     },[])
@@ -50,60 +51,125 @@ export const SinglePage = () => {
     }
 
     const addItemToCart = () => {
-        const existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || []
-        const itemExists = existingCartItems.some((item) => item.id === data.id)
-    
-        if (!itemExists) {
-          const cartItem = { ...data, quantity: count }
-          const newCartItems = [...existingCartItems, cartItem]
-          localStorage.setItem('cartItems', JSON.stringify(newCartItems))
-          setCart(newCartItems)
-          
-          toast({
-            title: 'Item Added To Cart',
-            status: 'success',
-            duration: 2000,
-            position:"top-right",
-            isClosable: true,
-          })
-        }
-        else{
-            toast({
-                title: 'Item Already In Cart',
-                status: 'error',
-                duration: 2000,
-                position:"top-right",
-                isClosable: true,
-              })
-        }
+      const token = JSON.parse(localStorage.getItem("token"))
+      const { image,image2,category,description,color,name,price } = data
+      let obj = {
+        image: image,
+        image2: image2,
+        category: category,
+        description: description,
+        color: color,
+        name: name,
+        price: price,
+        quantity : Number(count)
+    }
+
+    fetch("https://worrisome-bass-hosiery.cyclic.cloud/cart", {
+      method : "GET",
+      headers : {
+        "Authorization": token,
+        "Content-Type": "application/json"
       }
+    })
+    .then((res)=>res.json())
+    .then((res)=>{
+      let result = res.message
+      let val = result.filter((ele)=>ele.name==name)
+      if(val.length==0){
+        fetch("https://worrisome-bass-hosiery.cyclic.cloud/cart/add", {
+        method : "POST",
+        headers : {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        },
+        body : JSON.stringify(obj)
+      })
+      .then((res)=>res.json())
+      .then((res)=>{
+        // console.log(res)
+        toast({
+          title: 'Item Added To Cart',
+          status: 'success',
+          duration: 2000,
+          position:"top-right",
+          isClosable: true,
+        })
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+      }
+      else{
+        toast({
+          title: 'Item Already in Cart',
+          status: 'error',
+          duration: 2000,
+          position:"top-right",
+          isClosable: true,
+        })
+      }
+    })
+      
+    }
       const addItemTowishlist = () => {
-        const existingCartItems = JSON.parse(localStorage.getItem('wishlistItem')) || []
-        const itemExists = existingCartItems.some((item) => item.id === data.id)
-    
-        if (!itemExists) {
-          const cartItem = { ...data, quantity: count }
-          const newCartItems = [...existingCartItems, cartItem]
-          localStorage.setItem('wishlistItem', JSON.stringify(newCartItems))
-          setCart(newCartItems)
-          
+        const token = JSON.parse(localStorage.getItem("token"))
+        const { image,image2,category,description,color,name,price } = data
+        let obj = {
+          image: image,
+          image2: image2,
+          category: category,
+          description: description,
+          color: color,
+          name: name,
+          price: price,
+          quantity : Number(count)
+      }
+  
+      fetch("https://worrisome-bass-hosiery.cyclic.cloud/wish", {
+        method : "GET",
+        headers : {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        }
+      })
+      .then((res)=>res.json())
+      .then((res)=>{
+        let result = res.message
+        let val = result.filter((ele)=>ele.name==name)
+        if(val.length==0){
+          fetch("https://worrisome-bass-hosiery.cyclic.cloud/wish/add", {
+          method : "POST",
+          headers : {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          },
+          body : JSON.stringify(obj)
+        })
+        .then((res)=>res.json())
+        .then((res)=>{
+          // console.log(res)
           toast({
-            title: 'Item Added To Wish List',
+            title: 'Item Added To WishList',
             status: 'success',
             duration: 2000,
             position:"top-right",
             isClosable: true,
           })
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
         }
         else{
-            toast({
-                title: 'Item Already In Wish List',
-                status: 'error',
-                duration: 2000,
-                position:"top-right",
-                isClosable: true,
-              })
+          toast({
+            title: 'Item Already in WishList',
+            status: 'error',
+            duration: 2000,
+            position:"top-right",
+            isClosable: true,
+          })
         }
+      })
       }
       
 

@@ -13,6 +13,7 @@ import { Account } from "../SmallComponents/Account"
 import { Cart } from "../FourIcon/Cart"
 import { Checkout } from "../Pages/CheckOut"
 import { Wishlist } from "../FourIcon/Wishlist"
+import { PrivateRoute } from "../AuthContectProvider/PrivateRoute"
 
 
 export const Allroute = () => {
@@ -31,11 +32,11 @@ export const Allroute = () => {
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/signup" element={<Signup/>}></Route>
 
-        <Route path="/coffee/:id" element={<SinglePage/>}></Route>
-        <Route path="/account" element={<Account/>}></Route>
-        <Route path="/cart" element={<Cart/>}></Route>
-        <Route path="/checkout" element={<Checkout/>}></Route>
-        <Route path="/wishlist" element={<Wishlist/>}></Route>
+        <Route path="/coffee/:id" element={<PrivateRoute><SinglePage/></PrivateRoute>}></Route>
+        <Route path="/account" element={<PrivateRoute><Account/></PrivateRoute>}></Route>
+        <Route path="/cart" element={<PrivateRoute><Cart/></PrivateRoute>}></Route>
+        <Route path="/checkout" element={<PrivateRoute><Checkout/></PrivateRoute>}></Route>
+        <Route path="/wishlist" element={<PrivateRoute><Wishlist/></PrivateRoute>}></Route>
     </Routes>
         
     </div>

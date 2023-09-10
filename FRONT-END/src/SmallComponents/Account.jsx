@@ -1,7 +1,8 @@
 import { Box, Button, Input, Text, InputGroup, InputLeftAddon, Flex, FormControl, Stack, Toast, useToast} from '@chakra-ui/react'
-import React, { useContext, useReducer, useState } from 'react'
+import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { AuthContext } from '../AuthContectProvider/AuthContextProvider'
 import { AddressDetails } from './AddressDetails'
+import axios from 'axios'
 // private route
 
 let ini = {
@@ -42,7 +43,7 @@ export const Account = () => {
 
   let [addAddress, setAddAddress] = useState(false)
   
-  let [userData, setUserData] = useState(JSON.parse(localStorage.getItem("Address"))||[])
+  let [userData, setUserData] = useState([])
 
   let [formData, dispatch] = useReducer(reducer, ini)
 
@@ -50,8 +51,6 @@ export const Account = () => {
 
   let toast = useToast()
 
-
-  let [add, setadd] = useState(false)
 
   let handelAddress = ()=>{
     setAddAddress(!addAddress)
@@ -69,27 +68,62 @@ export const Account = () => {
     dispatch({type:"change", payload:payload})
 }
 
+let getData = ()=>{
+  const token = JSON.parse(localStorage.getItem("token"))
+  fetch("https://worrisome-bass-hosiery.cyclic.cloud/address",{
+    method:"GET",
+    headers :{
+      "Authorization": token,
+      "Content-Type": "application/json"
+    },
+  })
+  .then((res)=>res.json())
+  .then((res)=>{
+    console.log(res)
+    setUserData(res.message)
+  })
+  .catch((err)=>console.log(err))
+}
+
+useEffect(()=>{
+  getData()
+},[])
+
 let handelSubmit = (e)=>{
   e.preventDefault()
-  let data = {...formData}
-  
-  setUserData((prev)=>([
-    ...prev,
-    data
-  ]))
-
-  const existingAddress = JSON.parse(localStorage.getItem('Address')) || []
-        const itemExists = existingAddress.some((item) => item.id === data.id)
-    
-        if (!itemExists) {
-          const cartItem = { ...data }
-          const newAddress = [...existingAddress, cartItem]
-          localStorage.setItem('Address', JSON.stringify(newAddress))
-          setAddress(newAddress)
-          
-          
-        }
-       
+  const token = JSON.parse(localStorage.getItem("token"))
+  fetch("https://worrisome-bass-hosiery.cyclic.cloud/address/add",{
+    method:"POST",
+    headers :{
+      "Authorization": token,
+      "Content-Type": "application/json"
+    },
+    body:JSON.stringify(formData)
+  })
+  .then((res)=>res.json())
+  .then((res)=>{
+    fetch("https://worrisome-bass-hosiery.cyclic.cloud/address",{
+    method:"GET",
+    headers :{
+      "Authorization": token,
+      "Content-Type": "application/json"
+    },
+  })
+  .then((res)=>res.json())
+  .then((res)=>{
+    console.log(res)
+    setUserData(res.message)
+    toast({
+      title: 'Address Added',
+      status: 'success',
+      duration: 2000,
+      position:"top-right",
+      isClosable: true,
+    })
+  })
+  .catch((err)=>console.log(err))
+  })
+  .catch((err)=>console.log(err))
         
   
 
@@ -97,10 +131,28 @@ dispatch({type:"reset"})
 }
 
 const handleDelete = (id) => {
-  const updatedAddress = userData.filter((ele, ind) => ind !== id - 1);
-  setUserData(updatedAddress);
+  const token = JSON.parse(localStorage.getItem("token"))
+    fetch(`https://worrisome-bass-hosiery.cyclic.cloud/address/${id}`, {
+        method : "DELETE",
+        headers : {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        }
+      })
+      .then((res)=>res.json())
+      .then((res)=>{
+        toast({
+          title: 'Address Removed',
+          status: 'error',
+          duration: 2000,
+          position:"top-right",
+          isClosable: true,
+        })
+        getData()
+      })
+      .catch((err)=>console.log(err))
 
-  
+      getData()
 };
 
 
@@ -169,6 +221,7 @@ const handleDelete = (id) => {
                       <AddressDetails 
                     handelDelete = {handleDelete}
                     id = {index+1}
+                    getData = {getData}
                     {...ele}
                     />
                     </Box>

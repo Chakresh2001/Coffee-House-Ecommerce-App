@@ -12,6 +12,7 @@ import {
   TableContainer,
 } from '@chakra-ui/react'
 import { AuthContext } from '../AuthContectProvider/AuthContextProvider'
+import axios from 'axios'
 
 
 
@@ -19,17 +20,47 @@ import { AuthContext } from '../AuthContectProvider/AuthContextProvider'
 export const Wishlist = () => {
 
   let {isAuth} = useContext(AuthContext)
-
+  const toast = useToast()
 
   let [wishItem, setwishItem] = useState([])
+
+  const getData = ()=>{
+    const token = JSON.parse(localStorage.getItem("token"))
+    fetch("https://worrisome-bass-hosiery.cyclic.cloud/wish", {
+        method : "GET",
+        headers : {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        }
+      })
+      .then((res)=>res.json())
+      .then((res)=>setwishItem(res.message))
+      .catch((err)=>console.log(err))
+  }
   useEffect(()=>{
-    let avilable = JSON.parse(localStorage.getItem("wishlistItem")) || []
-    setwishItem(avilable)
+    getData()
   },[])
   let handelDelete = (id) => {
-    const updatedItems = wishItem.filter((item) => item.id !== id)
-    localStorage.setItem('wishlistItem', JSON.stringify(updatedItems))
-    setwishItem(updatedItems)
+    const token = JSON.parse(localStorage.getItem("token"))
+    fetch(`https://worrisome-bass-hosiery.cyclic.cloud/wish/${id}`, {
+        method : "DELETE",
+        headers : {
+          "Authorization": token,
+          "Content-Type": "application/json"
+        }
+      })
+      .then((res)=>res.json())
+      .then((res)=>{
+        toast({
+          title: 'Item Removed From WishList',
+          status: 'error',
+          duration: 2000,
+          position:"top-right",
+          isClosable: true,
+        })
+        getData()
+      })
+      .catch((err)=>console.log(err))
   }
   return (
     <div>
@@ -37,9 +68,11 @@ export const Wishlist = () => {
           isAuth ? (
             <Box bg="#F0ECEC">
       <Box >
-        <Box padding="40px"><Text fontSize={"40px"} fontWeight={"bold"}>Shopping Cart</Text></Box>
+        <Box padding="40px"><Text fontSize={"40px"} fontWeight={"bold"}>Wish List Cart ❤️</Text></Box>
 
-       <Box mt="40px"  display={"flex"} justifyContent={"space-around"}>
+       {
+        wishItem.length > 0 ? (
+          <Box mt="40px"  display={"flex"} justifyContent={"space-around"}>
        <TableContainer  minWidth='1000px' mb="40px" borderRadius='lg' boxShadow='lg'>
   <Table  variant='simple'  >
     <Thead>
@@ -63,7 +96,7 @@ export const Wishlist = () => {
           <Td  textAlign={"center"} w='25%'>${ele.price.toFixed(2)}</Td>
           <Td  textAlign={"center"} w='25%'>{ele.quantity}</Td>
           <Td  textAlign={"center"} w='25%' >${(ele.price * ele.quantity).toFixed(2)}</Td>
-          <Td color="brown" onClick={() => handelDelete(ele.id)} _hover={{cursor:"pointer"}}>Delete</Td>
+          <Td color="brown" onClick={() => handelDelete(ele._id)} _hover={{cursor:"pointer"}}>Delete</Td>
         </Tr>
       ))}
     </Tbody>
@@ -78,6 +111,10 @@ export const Wishlist = () => {
   </Table>
 </TableContainer>
 </Box>
+        ) : (
+          <Text fontSize={"34px"} textAlign={"center"} fontWeight={"bold"}>No Items In Wish List</Text>
+        )
+       }
 </Box>
 </Box>
           ) : (

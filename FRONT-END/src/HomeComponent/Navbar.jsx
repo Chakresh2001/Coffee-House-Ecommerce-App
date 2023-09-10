@@ -92,12 +92,12 @@ export const Navbar = () => {
                 </Box>
                 <Flex mt="20px" justifyContent={"space-evenly"} pb={"15px"}>
 
-                    <Link to="#"><Text>COFFEE ROASTING</Text></Link>  
+                    {/* <Link to="#"><Text>COFFEE ROASTING</Text></Link>   */}
                     <Link to="/MokaExpress"><Text>MOKA EXPRESS</Text></Link>  
                     <Link to="/shop"><Text>SHOP</Text></Link>  
                     <Link to="/News&Blog"><Text>NEWS & BLOGS</Text></Link>  
                     <Link to="/About"><Text>ABOUT</Text></Link>
-                    <Link to="#"><Text>STORIES</Text></Link>  
+                    {/* <Link to="#"><Text>STORIES</Text></Link>   */}
                     
                     
                 </Flex>

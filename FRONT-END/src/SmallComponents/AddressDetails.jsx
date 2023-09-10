@@ -1,8 +1,8 @@
 import { Box, Stack, Text, Button } from '@chakra-ui/react'
 import React from 'react'
 
-export const AddressDetails = ({handelDelete,id,HouseNo,TowerNo,Building,Address,Landmark,phoneNo,}) => {
-    console.log(id)
+export const AddressDetails = ({handelDelete,_id,id,HouseNo,TowerNo,Building,Address,Landmark,phoneNo}) => {
+
   return (
     <div>
         <Box  fontSize={"20px"} fontWeight={"bold"} >
@@ -25,7 +25,7 @@ export const AddressDetails = ({handelDelete,id,HouseNo,TowerNo,Building,Address
       <Text>{`Address :-  ${Address}`}</Text>
       <Text>{`Landmark :-  ${Landmark}`}</Text>
       <Text>{`Phone No :- ${phoneNo}`}</Text>
-      <Button w="25%" onClick={() => handelDelete(id)} bg={"red"} color={"white"}>
+      <Button w="25%" onClick={() => handelDelete(_id)} bg={"red"} color={"white"}>
         Delete
       </Button>
     </Stack>

@@ -63,7 +63,7 @@ export const Signup = () => {
 
 
     if(check!==formData.password){
-       toast({
+      return toast({
          title: 'Password Mismatch',
          description:"Password and Confirm Password Mismatch",
          status: 'error',
@@ -72,20 +72,18 @@ export const Signup = () => {
          position:"top-right"
        })
      }
-     else if (check==formData.password){
-      
-      axios.get(`https://mock-chak.onrender.com/users`)
-      .then((res)=>{
-        let data = res?.data
-        let result = data.filter((ele)=>{
-          if(ele.email==formData.email){
-            return true
-          }
-          
-        })
-        if(result.length==0){
-          axios.post(`https://mock-chak.onrender.com/users`,formData)
+    
+    const {firstName, lastName, email, password} = formData
+    const name = `${firstName} ${lastName}`
+    let obj = {
+      name : name,
+      email : email,
+      password : password
+    }
+
+    axios.post(`https://worrisome-bass-hosiery.cyclic.cloud/user/register`,obj)
         .then((res)=>{
+          console.log(res)
           toast({
             title: 'Account created.',
             description: "We've created your account for you.",
@@ -96,22 +94,16 @@ export const Signup = () => {
           setTimeout(() => {
             navigate("/login")
           }, 3000);
-        })
-        }
-        else{
-          toast({
-            title: 'User Already Registered',
-            status: 'error',
-            duration: 2000,
-            isClosable: true,
-          })
-        }
-        
+    })
+    .catch((err)=>{
+      console.log(err.response.data.error)
+      toast({
+        title: err.response.data.error,
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
       })
-
-      
-    }
-    
+    })
      
     
    dispatch({type:"reset"})

@@ -24,22 +24,17 @@ export const Login = () => {
 
   let handelSubmit = ()=>{
     
+    
+    let obj = {
+      email : email,
+      password: password
+    }
 
-    axios.get(`https://mock-chak.onrender.com/users`)
+    axios.post(`https://worrisome-bass-hosiery.cyclic.cloud/user/login`, obj)
     .then((res)=>{
-        let data = res?.data
-
-        let result = data.filter((ele)=>{
-          if(ele.email==email && ele.password==password){
-            return true
-          }
-          else{
-            return false
-          }
-        })
-
-        if(result.length>0){
-          setNewNAme(`${result[0].firstName} ${result[0].lastName}`)
+      console.log(res.data)
+      setNewNAme(res.data.userName)
+      localStorage.setItem("token", JSON.stringify(res.data.token))
           toast({
             title: 'SUCCESFULLY LOGGED IN',
             status: 'success',
@@ -51,17 +46,16 @@ export const Login = () => {
           setTimeout(() => {
             navigate("/")
           }, 3000);
-        }
-        else{
-          toast({
-            title: 'WRONG CREDENTIALS',
-            status: 'error',
-            duration: 2000,
-            position:"top-right",
-            isClosable: true,
-          })
-          isAuthFalse()
-        }
+    })
+    .catch((err)=>{
+      toast({
+        title: err.response.data.error,
+        status: 'error',
+        duration: 2000,
+        position:"top-right",
+        isClosable: true,
+      })
+      isAuthFalse()
     })
 
     setEmail("")

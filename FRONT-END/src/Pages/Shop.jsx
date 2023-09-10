@@ -1,4 +1,4 @@
-import { Image, Box, Text, Flex, Button, Spinner   } from '@chakra-ui/react'
+import { Image, Box, Text, Flex, Button, Spinner, Center   } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { CoffeCard } from '../SmallComponents/CoffeCard'
 import axios from 'axios'
@@ -39,12 +39,12 @@ export const Shop = () => {
 
     setLoad(true)
 
-    let api = getApi(`https://mock-chak.onrender.com/coffee?_limit=6&_page=${page}`, category, order)
+    let api = getApi(`https://worrisome-bass-hosiery.cyclic.cloud/coffee?_limit=6&_page=${page}`, category, order)
 
     axios.get(api)
     .then((res)=>{
       setLoad(false)
-      let result = res?.data
+      let result = res?.data.coffee
       setData(result)
     })
 
@@ -57,9 +57,6 @@ export const Shop = () => {
   useEffect(()=>{
     fetchData()
   },[category,order, page])
-
-
-
 
 
 
@@ -89,10 +86,10 @@ export const Shop = () => {
           <hr />
 
           <Box ml="100px" >
-            <select style={{marginTop:"20px" , fontSize:"14px", fontWeight:"-moz-initial"}} name="price">
-              <option value="" style={{border:"none"}} onChange={(e)=>setOrder(e.target.value)}>SORTING</option>
-              <option value="asc" onChange={(e)=>setOrder(e.target.value)}>High to Low</option>
-              <option value="desc" onChange={(e)=>setOrder(e.target.value)}>Low To High</option>
+            <select style={{marginTop:"20px" , fontSize:"14px", fontWeight:"-moz-initial"}} name="price" onChange={(e)=>setOrder(e.target.value)}>
+              <option value="" style={{border:"none"}} >SORTING</option>
+              <option value="asc">Low To High</option>
+              <option value="desc">High To Low</option>
             </select>
 
             <Box mt="30px">
@@ -111,6 +108,8 @@ export const Shop = () => {
 
                 {
                   load ? (
+                    <Center>
+
                     <Spinner
   thickness='4px'
   speed='0.65s'
@@ -118,6 +117,7 @@ export const Shop = () => {
   color='blue.500'
   size='xl'
 />
+                    </Center>
                   ) : (
                     <>
                     
