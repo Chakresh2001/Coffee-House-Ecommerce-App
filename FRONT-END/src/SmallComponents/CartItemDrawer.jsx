@@ -15,9 +15,12 @@ export const CartItemDrawer = ({onClose}) => {
 
   let [address, setAddress] = useState([])
 
+  const [add, setAdd] = useState(0)
+
   const getData = ()=>{
     const token = JSON.parse(localStorage.getItem("token"))
-    fetch("https://worrisome-bass-hosiery.cyclic.cloud/cart", {
+    if(token){
+      fetch("https://worrisome-bass-hosiery.cyclic.cloud/cart", {
         method : "GET",
         headers : {
           "Authorization": token,
@@ -25,14 +28,15 @@ export const CartItemDrawer = ({onClose}) => {
         }
       })
       .then((res)=>res.json())
-      .then((res)=>setCartItem(res.message))
+      .then((res)=>add = setCartItem(res.message))
       .catch((err)=>console.log(err))
+    }
   }
 
-  useEffect(()=>{
-    getData()
+  let check = ()=>{
     const token = JSON.parse(localStorage.getItem("token"))
-    fetch("https://worrisome-bass-hosiery.cyclic.cloud/address",{
+    if(token){
+      fetch("https://worrisome-bass-hosiery.cyclic.cloud/address",{
     method:"GET",
     headers :{
       "Authorization": token,
@@ -42,10 +46,34 @@ export const CartItemDrawer = ({onClose}) => {
   .then((res)=>res.json())
   .then((res)=>{
     console.log(res)
+    setAdd(res.message.length)
+    setAddress(res.message)
+    console.log(res.message)
+  })
+  .catch((err)=>console.log(err))
+    }
+  }
+
+  useEffect(()=>{
+    getData()
+    const token = JSON.parse(localStorage.getItem("token"))
+    if(token){
+      fetch("https://worrisome-bass-hosiery.cyclic.cloud/address",{
+    method:"GET",
+    headers :{
+      "Authorization": token,
+      "Content-Type": "application/json"
+    },
+  })
+  .then((res)=>res.json())
+  .then((res)=>{
+    console.log(res)
+    setAdd(res.message.length)
     setAddress(res.message)
   })
   .catch((err)=>console.log(err))
-  },[])
+    }
+  },[isAuth])
 
   useEffect(() => {
     let val = 0
@@ -57,7 +85,8 @@ export const CartItemDrawer = ({onClose}) => {
 
   let handelDelete = (id) => {
     const token = JSON.parse(localStorage.getItem("token"))
-    fetch(`https://worrisome-bass-hosiery.cyclic.cloud/cart/${id}`, {
+    if(token){
+      fetch(`https://worrisome-bass-hosiery.cyclic.cloud/cart/${id}`, {
         method : "DELETE",
         headers : {
           "Authorization": token,
@@ -74,24 +103,26 @@ export const CartItemDrawer = ({onClose}) => {
           isClosable: true,
         })
         getData()
+        check()
       })
       .catch((err)=>console.log(err))
+    }
   }
-
+  
   let handelPage = ()=>{
     setCartPage(true)
   }
   if(cartPage){
     onClose()
-   
+    
   }
-  
+  console.log(add)
 
   return (
     <div>
       <Box>
         {
-          cartItem.map((ele)=>(
+          cartItem.length > 0 && cartItem.map((ele)=>(
             <Box padding="10px">
               <Box display={"flex"} gap="40px" justifyContent={"space-around"}>
              
@@ -130,7 +161,7 @@ export const CartItemDrawer = ({onClose}) => {
         <Box  mt="20px">
         
         
-        {address.length>0 ? (<><Link to={"/cart"}><Button ml="110px" borderRadius={"25px"} bg="white" border="1px solid black" color="black" _hover={{bg:"black", color:"white"}} onClick={handelPage}>VIEW CART</Button></Link>
+        {add>=1? (<><Link to={"/cart"}><Button ml="110px" borderRadius={"25px"} bg="white" border="1px solid black" color="black" _hover={{bg:"black", color:"white"}} onClick={handelPage}>VIEW CART</Button></Link>
         
         <Link to={"/checkout"}><Button ml="60px" borderRadius={"25px"} mt="10px" bg="red" color="white" _hover={{bg:"red", color:"white"}}>PROCEED TO CHECKOUT</Button></Link></>):( 
           
