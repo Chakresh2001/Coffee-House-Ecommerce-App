@@ -70,7 +70,7 @@ export const Account = () => {
 
 let getData = ()=>{
   const token = JSON.parse(localStorage.getItem("token"))
-  fetch("https://worrisome-bass-hosiery.cyclic.cloud/address",{
+  fetch("https://bialetti-backend.onrender.com/address",{
     method:"GET",
     headers :{
       "Authorization": token,
@@ -92,7 +92,7 @@ useEffect(()=>{
 let handelSubmit = (e)=>{
   e.preventDefault()
   const token = JSON.parse(localStorage.getItem("token"))
-  fetch("https://worrisome-bass-hosiery.cyclic.cloud/address/add",{
+  fetch("https://bialetti-backend.onrender.com/address/add",{
     method:"POST",
     headers :{
       "Authorization": token,
@@ -102,7 +102,7 @@ let handelSubmit = (e)=>{
   })
   .then((res)=>res.json())
   .then((res)=>{
-    fetch("https://worrisome-bass-hosiery.cyclic.cloud/address",{
+    fetch("https://bialetti-backend.onrender.com/address",{
     method:"GET",
     headers :{
       "Authorization": token,
@@ -132,7 +132,7 @@ dispatch({type:"reset"})
 
 const handleDelete = (id) => {
   const token = JSON.parse(localStorage.getItem("token"))
-    fetch(`https://worrisome-bass-hosiery.cyclic.cloud/address/${id}`, {
+    fetch(`https://bialetti-backend.onrender.com/address/${id}`, {
         method : "DELETE",
         headers : {
           "Authorization": token,

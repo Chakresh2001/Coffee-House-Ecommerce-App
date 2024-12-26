@@ -26,7 +26,7 @@ export const Wishlist = () => {
 
   const getData = ()=>{
     const token = JSON.parse(localStorage.getItem("token"))
-    fetch("https://worrisome-bass-hosiery.cyclic.cloud/wish", {
+    fetch("https://bialetti-backend.onrender.com/wish", {
         method : "GET",
         headers : {
           "Authorization": token,
@@ -42,7 +42,7 @@ export const Wishlist = () => {
   },[])
   let handelDelete = (id) => {
     const token = JSON.parse(localStorage.getItem("token"))
-    fetch(`https://worrisome-bass-hosiery.cyclic.cloud/wish/${id}`, {
+    fetch(`https://bialetti-backend.onrender.com/wish/${id}`, {
         method : "DELETE",
         headers : {
           "Authorization": token,

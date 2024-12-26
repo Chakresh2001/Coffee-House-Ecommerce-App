@@ -81,7 +81,7 @@ export const Signup = () => {
       password : password
     }
 
-    axios.post(`https://worrisome-bass-hosiery.cyclic.cloud/user/register`,obj)
+    axios.post(`https://bialetti-backend.onrender.com/user/register`,obj)
         .then((res)=>{
           console.log(res)
           toast({

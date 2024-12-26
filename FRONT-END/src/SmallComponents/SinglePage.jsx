@@ -35,7 +35,7 @@ export const SinglePage = () => {
 
     useEffect(()=>{
         setLoad(true)
-        axios.get(`https://worrisome-bass-hosiery.cyclic.cloud/coffee/${id}`)
+        axios.get(`https://bialetti-backend.onrender.com/coffee/${id}`)
         .then((res)=>{
             setLoad(false)
             setData(res.data.coffee[0])
@@ -64,7 +64,7 @@ export const SinglePage = () => {
         quantity : Number(count)
     }
 
-    fetch("https://worrisome-bass-hosiery.cyclic.cloud/cart", {
+    fetch("https://bialetti-backend.onrender.com/cart", {
       method : "GET",
       headers : {
         "Authorization": token,
@@ -76,7 +76,7 @@ export const SinglePage = () => {
       let result = res.message
       let val = result.filter((ele)=>ele.name==name)
       if(val.length==0){
-        fetch("https://worrisome-bass-hosiery.cyclic.cloud/cart/add", {
+        fetch("https://bialetti-backend.onrender.com/cart/add", {
         method : "POST",
         headers : {
           "Authorization": token,
@@ -125,7 +125,7 @@ export const SinglePage = () => {
           quantity : Number(count)
       }
   
-      fetch("https://worrisome-bass-hosiery.cyclic.cloud/wish", {
+      fetch("https://bialetti-backend.onrender.com/wish", {
         method : "GET",
         headers : {
           "Authorization": token,
@@ -137,7 +137,7 @@ export const SinglePage = () => {
         let result = res.message
         let val = result.filter((ele)=>ele.name==name)
         if(val.length==0){
-          fetch("https://worrisome-bass-hosiery.cyclic.cloud/wish/add", {
+          fetch("https://bialetti-backend.onrender.com/wish/add", {
           method : "POST",
           headers : {
             "Authorization": token,

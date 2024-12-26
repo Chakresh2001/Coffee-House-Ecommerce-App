@@ -30,7 +30,7 @@ export const Login = () => {
       password: password
     }
 
-    axios.post(`https://worrisome-bass-hosiery.cyclic.cloud/user/login`, obj)
+    axios.post(`https://bialetti-backend.onrender.com/user/login`, obj)
     .then((res)=>{
       console.log(res.data)
       setNewNAme(res.data.userName)

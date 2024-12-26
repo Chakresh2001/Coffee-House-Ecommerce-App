@@ -50,7 +50,7 @@ export const Cart = () => {
 
   const getData = ()=>{
     const token = JSON.parse(localStorage.getItem("token"))
-    fetch("https://worrisome-bass-hosiery.cyclic.cloud/cart", {
+    fetch("https://bialetti-backend.onrender.com/cart", {
         method : "GET",
         headers : {
           "Authorization": token,
@@ -66,7 +66,7 @@ export const Cart = () => {
   useEffect(()=>{
     getData()
     const token = JSON.parse(localStorage.getItem("token"))
-    fetch("https://worrisome-bass-hosiery.cyclic.cloud/address",{
+    fetch("https://bialetti-backend.onrender.com/address",{
     method:"GET",
     headers :{
       "Authorization": token,
@@ -96,7 +96,7 @@ export const Cart = () => {
 
   let handelDelete = (id) => {
     const token = JSON.parse(localStorage.getItem("token"))
-    fetch(`https://worrisome-bass-hosiery.cyclic.cloud/cart/${id}`, {
+    fetch(`https://bialetti-backend.onrender.com/cart/${id}`, {
         method : "DELETE",
         headers : {
           "Authorization": token,
